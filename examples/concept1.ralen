@@ -1,0 +1,29 @@
+# macro set
+macset * log -> void (msg: string) runs
+    .emit "echo ${msg}"
+
+# struct set
+typeset * Character does
+    propset ~ int @age
+    propset * string @name
+
+    descset * speak -> void (words: string) runs
+        .invoke echo(words)
+
+    istcset * greet -> void () runs
+        .invoke echo("Hello! My name is ", @name)
+
+    descset * new -> Character (name: string) runs
+        .ret Character(age: 20, name: @name)
+
+
+# procedment set
+procset * main -> int runs
+    .set Character @ppl = Character.new("Petter")
+    .set seq[int] @days = [1, 13, 14, 17, 19]
+
+    .if (@days.lower == 1):
+        .invoke echo("Hello World!")
+
+    .invoke echo(@ppl.greet())
+    .ret 0
