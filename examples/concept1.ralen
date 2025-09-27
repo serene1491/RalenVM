@@ -1,28 +1,37 @@
 # macro set
-macset * log -> void (msg: string) runs
+macset * log -> void (msg: string):
     .emit "echo ${msg}"
 
+# enum declaration
+enumdec * stages:
+    Baby, Child, Adult,
+    Elderly
+
 # struct set
-typeset * Character does
+typeset * Character:
     propset ~ int @age
     propset * string @name
 
-    descset * speak -> void (words: string) runs
+    descset * speak -> void (words: string):
         .invoke echo(words)
 
-    istcset * greet -> void () runs
+    istcset * greet -> void ():
         .invoke echo("Hello! My name is ", @name)
 
-    descset * new -> Character (name: string) runs
+    descset * new -> Character (name: string):
         .ret Character(age: 20, name: @name)
 
 
 # procedment set
-procset * main -> int runs
+procset * main -> int:
     .set Character @ppl = Character.new("Petter")
     .set seq[int] @days = [1, 13, 14, 17, 19]
 
-    .if (@days.lower == 1):
+    .if @days.lower _equals 1:
+        .invoke echo("Hello World!")
+    .elif @days.lower _equals 1:
+        .invoke echo("Hello World!")
+    .else:
         .invoke echo("Hello World!")
 
     .invoke echo(@ppl.greet())
