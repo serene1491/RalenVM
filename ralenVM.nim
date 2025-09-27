@@ -9,7 +9,7 @@ when isMainModule:
     if not fileExists(path):
         echo "The file doesn't exists: " & path
         quit(1)
-    if path.len >= 6 and path[^6 .. ^1] == ".ralen":
+    if not path.len >= 6 and path[^6 .. ^1] == ".ralen":
         echo "Invalid extension. Expected an .ralen file"
         quit(1)
 
