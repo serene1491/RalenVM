@@ -23,7 +23,6 @@ proc newTokenizer*(s: string): Tokenizer =
     result.line = 1
     result.col = 1
 
-# helpers
 proc isSpace(ch: char): bool {.inline.} =
     ch == ' ' or ch == '\t' or ch == '\r'
 
@@ -92,7 +91,6 @@ proc dotCmdKind(name: string): TokenKind =
 proc tokenize*(t: Tokenizer): seq[Token] =
     var outt: seq[Token] = @[]
     while true:
-        # skip horizontal whitespace
         while true:
             let ch = peek(t)
             if ch == '\0': break
@@ -113,7 +111,6 @@ proc tokenize*(t: Tokenizer): seq[Token] =
 
         let ch = peek(t)
 
-        # comments
         if ch == '#':
             discard bump(t); discard bump(t)
             while peek(t) != '\0' and not isNewline(peek(t)):
@@ -123,14 +120,14 @@ proc tokenize*(t: Tokenizer): seq[Token] =
         # dot commands (.set, .invoke, etc.) or a plain dot between identifiers
         if ch == '.':
             let start = t.i
-            discard bump(t) # consume '.'
+            discard bump(t)
             if isAlpha(peek(t)):
                 # this is a dot-command like .set or .invoke
                 let idStart = t.i
-                # read ident
                 var idx = t.i
                 while idx < t.len and isIdentChar(t.src[idx]): idx.inc
                 let name = subStrRange(t.src, idStart, idx)
+
                 # advance tokenizer
                 while t.i < idx: discard bump(t)
                 let dk = dotCmdKind(name)
